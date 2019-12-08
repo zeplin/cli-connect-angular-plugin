@@ -1,0 +1,47 @@
+mixin linebreak(number)
+    | #{"\n".repeat(number)}
+
+mixin selector(selector, inputs)
+    | <#{selector.negative ? ':not(': ''}
+    if selector.element
+        | #{selector.element}
+    else
+        | div
+    if selector.attribute
+        |
+        |   #{selector.attribute}
+        if selector.value
+            | ="#{selector.value}"
+    if selector.cls && selector.cls.length > 0
+        |
+        |   class="
+        each cls, index in selector.cls
+            | #{cls}#{(index < selector.cls.length - 1) ? ' ' : ''}
+        | "
+    | #{selector.negative ? ')': ''}
+    +inputs(inputs)
+    | >
+
+mixin inputs(inputs)
+    if inputs && inputs.length > 0
+        each input, index in inputs
+            |
+            |   #{input.name}
+            if input.type
+                | ="{#{input.type}}"
+
+mixin selectorEnding(selector)
+    |
+    | </#{(selector.element) ? selector.element : 'div'}>
+
+mixin list(name, items)
+    - var arr = Array.isArray(items) ? items : [items];
+    if arr.length > 0
+        |
+        | #### #{name}
+        for item in arr
+            |
+            | - #{item}
+    +linebreak(1)
+
+block content
