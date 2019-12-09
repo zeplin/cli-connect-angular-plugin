@@ -1,0 +1,18 @@
+extends base
+
+block content
+    each component, index in components
+        if component.name && component.selectors && component.selectors.length > 0
+            if index !== 0
+                +linebreak(4)
+            | !{"<!--- " + component.name +  " examples --->"}
+            if component.selectors && component.selectors.length > 0
+                |
+                | <!--- Possible selectors:
+                |
+                each selector, index in component.selectors
+                    |   - #{selector.raw}
+                    |
+                | --->
+                |
+            +summarySnippet(component.inputs, component.hasChildren)

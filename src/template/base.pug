@@ -1,7 +1,7 @@
 mixin linebreak(number)
     | #{"\n".repeat(number)}
 
-mixin selector(selector, inputs)
+mixin fullSnippet(selector, inputs, hasChildren)
     | <#{selector.negative ? ':not(': ''}
     if selector.element
         | #{selector.element}
@@ -11,16 +11,31 @@ mixin selector(selector, inputs)
         |
         |   #{selector.attribute}
         if selector.value
-            | ="#{selector.value}"
+            | ='!{selector.value}'
     if selector.cls && selector.cls.length > 0
         |
-        |   class="
+        |   class='
         each cls, index in selector.cls
             | #{cls}#{(index < selector.cls.length - 1) ? ' ' : ''}
-        | "
+        | '
     | #{selector.negative ? ')': ''}
     +inputs(inputs)
     | >
+    if hasChildren
+        |
+        |     {content}
+    |
+    | </#{(selector.element) ? selector.element : 'div'}>
+
+mixin summarySnippet(inputs, hasChildren)
+    | <(selectors)
+    +inputs(inputs)
+    | >
+    if hasChildren
+        |
+        |     {content}
+    |
+    | </(selectors)>
 
 mixin inputs(inputs)
     if inputs && inputs.length > 0
@@ -28,14 +43,10 @@ mixin inputs(inputs)
             |
             |   #{input.name}
             if input.type
-                | ="{#{input.type}}"
-
-mixin selectorEnding(selector)
-    |
-    | </#{(selector.element) ? selector.element : 'div'}>
+                | ='{!{input.type}}'
 
 mixin list(name, items)
-    - var arr = Array.isArray(items) ? items : [items];
+    - var arr = Array.isArray(items) ? items : items ? [items] : [];
     if arr.length > 0
         |
         | #### #{name}
