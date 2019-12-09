@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/zeplin/cli-connect-angular-plugin#readme",
   "devDependencies": {
+    "@types/fs-extra": "^8.0.1",
     "@types/jest": "^24.0.18",
     "@types/node": "^12.7.5",
     "@types/pug": "^2.0.4",
@@ -43,6 +44,7 @@
   },
   "dependencies": {
     "@compodoc/compodoc": "git+ssh://git@github.com/yuqu/compodoc.git#develop",
+    "fs-extra": "^8.1.0",
     "pug": "^2.0.4"
   }
 }

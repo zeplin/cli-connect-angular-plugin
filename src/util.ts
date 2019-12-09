@@ -35,3 +35,7 @@ export function parseSelector(selector: string): Selector | null {
 
     return null;
 }
+
+export function ngContentExists(content: string): boolean {
+    return /<ng-content> *\n* *<\/ng-content>/.test(content);
+}

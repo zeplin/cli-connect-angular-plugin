@@ -20,7 +20,7 @@ declare module "@compodoc/compodoc" {
     }
 
     export interface ComponentDep extends Dep {
-        file: any;
+        file: string;
         changeDetection: any;
         encapsulation: any;
         exportAs: Array<string>;

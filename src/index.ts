@@ -1,8 +1,9 @@
-import { ConnectPlugin, ComponentConfig, ComponentData, PrismLang } from "@zeplin/cli";
-import { Selector, parseSelector } from "./selector";
 import path from "path";
 import pug from "pug";
+import { readFile } from "fs-extra";
 import { AngularDependencies, ComponentDep } from "@compodoc/compodoc";
+import { ConnectPlugin, ComponentConfig, ComponentData, PrismLang } from "@zeplin/cli";
+import { Selector, parseSelector, ngContentExists } from "./util";
 
 interface Component {
     name: string;
@@ -12,6 +13,7 @@ interface Component {
     inputs: Input[];
     _extends?: string;
     _implements?: string[];
+    hasChildren: boolean;
 }
 
 interface Input {
@@ -43,12 +45,11 @@ export default class implements ConnectPlugin {
             { tsconfigDirectory: ".", silent: true }
         );
 
-        const rawComponents = await angularDependencies.getDependencies().components || [];
+        const rawComponents = angularDependencies.getDependencies().components || [];
 
-        const components = this.processComponents(rawComponents);
+        const components = await Promise.all(this.processComponents(rawComponents));
 
         const snippet = this.generateSnippet({ components });
-        // Const description = components.map(c => `#### ${c.name}\n${c.description}`).join("\n\n");
         const description = this.generateDescription({ components });
 
         const lang = PrismLang.Markup;
@@ -64,9 +65,10 @@ export default class implements ConnectPlugin {
             filePath.lastIndexOf("spec.ts") === -1;
     }
 
-    private processComponents(rawComponents: ComponentDep[]): Component[] {
-        return rawComponents.map(rawComponent => {
+    private processComponents(rawComponents: ComponentDep[]): Promise<Component>[] {
+        return rawComponents.map(async rawComponent => {
             const {
+                file,
                 name,
                 description,
                 rawdescription: rawDescription,
@@ -75,9 +77,21 @@ export default class implements ConnectPlugin {
                 propertiesClass,
                 extends: _extends,
                 implements: _implements,
-                inputs: rawInputs
+                inputs: rawInputs,
+                template,
+                templateUrl
             } = rawComponent;
 
+            let hasChildren = false;
+
+            if (template && template.length > 0) {
+                hasChildren = ngContentExists(template);
+            } else if (templateUrl && templateUrl.length > 0 && templateUrl[0].length > 0) {
+                const fileContent = await readFile(path.join(path.dirname(file), templateUrl[0]));
+                hasChildren = ngContentExists(fileContent.toString());
+            }
+
+            console.log(templateUrl);
             const selectors: Selector[] = [];
             const inputs: Input[] = [];
 
@@ -133,7 +147,8 @@ export default class implements ConnectPlugin {
                 rawDescription,
                 inputs,
                 _extends,
-                _implements
+                _implements,
+                hasChildren
             };
         });
     }
