@@ -10,8 +10,4 @@ block content
             each selector, index in component.selectors
                 if index !== 0
                     +linebreak(2)
-                +selector(selector, component.inputs)
-                if component.hasChildren
-                    |
-                    |     {content}
-                +selectorEnding(selector)
+                +fullSnippet(selector, component.inputs, component.hasChildren)

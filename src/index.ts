@@ -8,6 +8,7 @@ interface Component {
     name: string;
     selectors: Selector[];
     description: string;
+    rawDescription: string;
     inputs: Input[];
     _extends?: string;
     _implements?: string[];
@@ -23,8 +24,18 @@ interface Input {
 }
 
 export default class implements ConnectPlugin {
-    generateSnippet = pug.compileFile(path.join(__dirname, "template/snippet.pug"));
-    generateDescription = pug.compileFile(path.join(__dirname, "template/description.pug"));
+    generateSnippet: pug.compileTemplate;
+    generateDescription: pug.compileTemplate;
+
+    constructor(opts?: { useFullDescription: boolean; useFullSnippet: boolean }) {
+        this.generateSnippet = (opts && opts.useFullSnippet)
+            ? pug.compileFile(path.join(__dirname, "template/snippet-full.pug"))
+            : pug.compileFile(path.join(__dirname, "template/snippet-summary.pug"));
+
+        this.generateDescription = (opts && opts.useFullDescription)
+            ? pug.compileFile(path.join(__dirname, "template/description-full.pug"))
+            : pug.compileFile(path.join(__dirname, "template/description-summary.pug"));
+    }
 
     async process(context: ComponentConfig): Promise<ComponentData> {
         const angularDependencies = new AngularDependencies(
@@ -58,6 +69,7 @@ export default class implements ConnectPlugin {
             const {
                 name,
                 description,
+                rawdescription: rawDescription,
                 selector,
                 inputsClass,
                 propertiesClass,
@@ -100,7 +112,7 @@ export default class implements ConnectPlugin {
             }
 
             if (inputsClass) {
-                inputs.concat(inputsClass);
+                inputsClass.forEach(i => inputs.push(i));
             }
 
             if (selector) {
@@ -118,6 +130,7 @@ export default class implements ConnectPlugin {
                 name,
                 selectors,
                 description,
+                rawDescription,
                 inputs,
                 _extends,
                 _implements
