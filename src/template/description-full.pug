@@ -6,7 +6,7 @@ block content
         +list("extends", component._extends)
         +list("implements", component._implements)
         if component.description.length > 0
-            +linebreak(2)
+            +linebreak(1)
             | !{component.description}
         if index !== (components.length - 1)
-            +linebreak(3)
+            +linebreak(2)

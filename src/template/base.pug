@@ -1,7 +1,7 @@
 mixin linebreak(number)
     | #{"\n".repeat(number)}
 
-mixin fullSnippet(selector, inputs, hasChildren)
+mixin snippet(selector, inputs, hasChildren)
     | <#{selector.negative ? ':not(': ''}
     if selector.element
         | #{selector.element}
@@ -27,16 +27,6 @@ mixin fullSnippet(selector, inputs, hasChildren)
     |
     | </#{(selector.element) ? selector.element : 'div'}>
 
-mixin summarySnippet(inputs, hasChildren)
-    | <(selectors)
-    +inputs(inputs)
-    | >
-    if hasChildren
-        |
-        |     {content}
-    |
-    | </(selectors)>
-
 mixin inputs(inputs)
     if inputs && inputs.length > 0
         each input, index in inputs
@@ -53,6 +43,5 @@ mixin list(name, items)
         for item in arr
             |
             | - #{item}
-    +linebreak(1)
 
 block content
