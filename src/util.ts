@@ -28,7 +28,7 @@ export function parseSelector(selector: string): Selector | null {
             element,
             attribute,
             value,
-            cls: cls ? cls.split(".") : [],
+            cls: cls ? cls.split(".").filter(Boolean) : [],
             negative: !!not
         };
     }
