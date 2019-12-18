@@ -2,7 +2,9 @@ import path from "path";
 import pug from "pug";
 import { readFile } from "fs-extra";
 import { AngularDependencies, ComponentDep } from "@compodoc/compodoc";
-import { ConnectPlugin, ComponentConfig, ComponentData, PrismLang } from "@zeplin/cli";
+import {
+    ConnectPlugin, ComponentConfig, ComponentData, PrismLang, PluginContext
+} from "@zeplin/cli";
 import { Selector, parseSelector, ngContentExists } from "./util";
 
 interface Component {
@@ -25,18 +27,28 @@ interface Input {
     description: string;
 }
 
+interface AngularPluginConfig {
+    useFullDescription: boolean;
+    useFullSnippet: boolean;
+}
+
 export default class implements ConnectPlugin {
-    generateSnippet: pug.compileTemplate;
-    generateDescription: pug.compileTemplate;
+    generateSnippet: pug.compileTemplate = pug.compileFile(path.join(__dirname, "template/snippet-summary.pug"));
+    generateDescription: pug.compileTemplate = pug.compileFile(path.join(__dirname, "template/description-summary.pug"));
 
-    constructor(opts?: { useFullDescription: boolean; useFullSnippet: boolean }) {
-        this.generateSnippet = (opts && opts.useFullSnippet)
-            ? pug.compileFile(path.join(__dirname, "template/snippet-full.pug"))
-            : pug.compileFile(path.join(__dirname, "template/snippet-summary.pug"));
+    init(context: PluginContext): Promise<void> {
+        if (context.config) {
+            const { useFullDescription, useFullSnippet } = context.config as AngularPluginConfig;
 
-        this.generateDescription = (opts && opts.useFullDescription)
-            ? pug.compileFile(path.join(__dirname, "template/description-full.pug"))
-            : pug.compileFile(path.join(__dirname, "template/description-summary.pug"));
+            if (useFullSnippet) {
+                this.generateSnippet = pug.compileFile(path.join(__dirname, "template/snippet-full.pug"));
+            }
+            if (useFullDescription) {
+                this.generateDescription = pug.compileFile(path.join(__dirname, "template/description-full.pug"));
+            }
+        }
+
+        return Promise.resolve();
     }
 
     async process(context: ComponentConfig): Promise<ComponentData> {
@@ -91,7 +103,6 @@ export default class implements ConnectPlugin {
                 hasChildren = ngContentExists(fileContent.toString());
             }
 
-            console.log(templateUrl);
             const selectors: Selector[] = [];
             const inputs: Input[] = [];
 
