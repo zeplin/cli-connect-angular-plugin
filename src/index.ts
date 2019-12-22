@@ -27,18 +27,13 @@ interface Input {
     description: string;
 }
 
-interface AngularPluginConfig {
-    useFullDescription: boolean;
-    useFullSnippet: boolean;
-}
-
 export default class implements ConnectPlugin {
     generateSnippet: pug.compileTemplate = pug.compileFile(path.join(__dirname, "template/snippet-summary.pug"));
     generateDescription: pug.compileTemplate = pug.compileFile(path.join(__dirname, "template/description-summary.pug"));
 
     init(context: PluginContext): Promise<void> {
         if (context.config) {
-            const { useFullDescription, useFullSnippet } = context.config as AngularPluginConfig;
+            const { useFullDescription, useFullSnippet } = context.config;
 
             if (useFullSnippet) {
                 this.generateSnippet = pug.compileFile(path.join(__dirname, "template/snippet-full.pug"));
