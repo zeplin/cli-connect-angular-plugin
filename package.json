@@ -30,7 +30,7 @@
     "@types/pug": "^2.0.4",
     "@typescript-eslint/eslint-plugin": "^2.3.0",
     "@typescript-eslint/parser": "^2.3.0",
-    "@zeplin/cli": "^0.2.7",
+    "@zeplin/cli": "^0.3.0",
     "@zeplin/eslint-config": "^2.2.0",
     "copyfiles": "^2.1.1",
     "eslint": "^6.4.0",
@@ -43,7 +43,7 @@
     "typescript": "^3.6.2"
   },
   "dependencies": {
-    "@compodoc/compodoc": "git+ssh://git@github.com/yuqu/compodoc.git#develop",
+    "@compodoc/compodoc": "git+https://github.com/yuqu/compodoc.git#develop",
     "fs-extra": "^8.1.0",
     "pug": "^2.0.4"
   }
