@@ -18,7 +18,7 @@ Run CLI `connect` command using the plugin.
 zeplin connect -p @zeplin/cli-connect-angular-plugin
 ```
 
-Zeplin CLI Angular Plugin uses a fork of [Compodoc](https://github.com/compodoc/compodoc) to analyze and collection information from Angular components.
+Zeplin CLI Angular Plugin uses a fork of [Compodoc](https://github.com/compodoc/compodoc) to analyze and collect information from Angular components.
 
 ### Configuration
 
