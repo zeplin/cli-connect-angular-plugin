@@ -18,14 +18,19 @@ Run CLI `connect` command using the plugin.
 zeplin connect -p @zeplin/cli-connect-angular-plugin
 ```
 
-### Plugin Configuration
+Zeplin CLI Angular Plugin uses a fork of [Compodoc](https://github.com/compodoc/compodoc) to analyze and collection information from Angular components.
 
-The plugin can generate more detailed snippets and descriptions. Use [the components configuration file](./docs/cli.componentconfigfile.plugins.md) add the plugin configuration shown as below.
+### Configuration
 
-- useFullSnippet: Generates a distinct snippet for all combinations of the component selectors
-- useFullDescriptions: Generated descriptions will show implemented interface names
+If necessary, Zeplin CLI Angular Plugin can generate more detailed snippets and descriptions. Update your [components configuration file](./docs/cli.componentconfigfile.plugins.md) to add the properties you need.
 
-.zeplin/components.json
+| Property             | Description                                                                  |
+|----------------------|------------------------------------------------------------------------------|
+| `useFullSnippet`     | Generates a distinct snippet for all combinations of the component selectors |
+| `useFullDescription` | Generates descriptions with implemented interface names                      |
+
+Here's a sample configuration file (`.zeplin/components.json`):
+
 ```json
 {
     ...
@@ -40,15 +45,7 @@ The plugin can generate more detailed snippets and descriptions. Use [the compon
 }
 ```
 
-After adding plugin configuration there is no need to add `-p` flag when running CLI `connect` command.
-
-```sh
-zeplin connect
-```
-
-## Dependencies
-
-We use a forked version of [Compodoc](https://github.com/compodoc/compodoc) to gather details about Angular components.
+☝️ _Note that after adding the plugin to the configuration file, you don't need to pass it as the `-p` argument to the `connect` command—running `zeplin connect` should be enough._
 
 ## About Connected Components
 
