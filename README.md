@@ -1,29 +1,36 @@
-# Zeplin CLI Connected Components - Angular Plugin
+# Zeplin CLI Angular Plugin
 
-This plugin provides a processor to gather code snippets and descriptions from Angular components.
+[Zeplin CLI](https://github.com/zeplin/cli) plugin to generate descriptions and code snippets for Angular components.
 
-## Dependencies
+## Installation
 
-We use a forked version of [Compodoc](https://github.com/compodoc/compodoc) to gather details about Angular components. It just exposes some small parts of the repository be used as a library.
+Install plugin using npm.
+
+```sh
+npm install -g @zeplin/cli-connect-angular-plugin
+```
 
 ## Usage
 
-Install this package along with @zeplin/cli npm package
+Run CLI `connect` command using the plugin.
 
-```
-npm install -g @zeplin/cli @zeplin/cli-connect-angular-plugin
-```
-
-Execute connect command on Zeplin CLI using -p option to include the plugin into the connect operation.
-
-```
+```sh
 zeplin connect -p @zeplin/cli-connect-angular-plugin
 ```
-## Config
 
-You can configure the plugin to generate more detailed snippets and descriptions. In order to do that add the following configuration sample into `plugins` field of [the components configuration file](./docs/cli.componentconfigfile.plugins.md).
+Zeplin CLI Angular Plugin uses a fork of [Compodoc](https://github.com/compodoc/compodoc) to analyze and collect information from Angular components.
 
-.zeplin/components.json
+### Configuration
+
+If necessary, Zeplin CLI Angular Plugin can generate more detailed snippets and descriptions. Update your [components configuration file](./docs/cli.componentconfigfile.plugins.md) to add the properties you need.
+
+| Property             | Description                                                                  |
+|----------------------|------------------------------------------------------------------------------|
+| `useFullSnippet`     | Generates a distinct snippet for all combinations of the component selectors |
+| `useFullDescription` | Generates descriptions with implemented interface names                      |
+
+Here's a sample configuration file (`.zeplin/components.json`):
+
 ```json
 {
     ...
@@ -37,3 +44,11 @@ You can configure the plugin to generate more detailed snippets and descriptions
     ...
 }
 ```
+
+☝️ _Note that after adding the plugin to the configuration file, you don't need to pass it as the `-p` argument to the `connect` command—running `zeplin connect` should be enough._
+
+## About Connected Components
+
+[Connected Components](https://blog.zeplin.io/introducing-connected-components-components-in-design-and-code-in-harmony-aa894ed5bd95) in Zeplin lets you access components in your codebase directly on designs in Zeplin, with links to Storybook, GitHub and any other source of documentation based on your workflow. 🧩
+
+[Zeplin CLI](https://github.com/zeplin/cli) uses plugins like this one to analyze component source code and publishes a high-level overview to be displayed in Zeplin.
