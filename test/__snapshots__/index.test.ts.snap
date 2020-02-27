@@ -3,13 +3,12 @@
 exports[`Connected Components Angular Plugin component.ts snippet creation 1`] = `
 Object {
   "description": "#### BankAccount
-<p>This is a bank account component</p>
-
+This is a bank account component
+This is line 2 description
 
 
 #### BankAccountHolder
-<p>This is a bank account holder component</p>
-",
+This is a bank account holder component",
   "lang": "markup",
   "snippet": "<!--- BankAccount examples --->
 <!--- Possible selectors:
@@ -35,13 +34,11 @@ Object {
 exports[`Connected Components Angular Plugin componentWithDecoratorInputs.ts snippet creation 1`] = `
 Object {
   "description": "#### BankAccount
-<p>This is a bank account component</p>
-
+This is a bank account component
 
 
 #### BankAccountHolder
-<p>This is a bank account holder component</p>
-",
+This is a bank account holder component",
   "lang": "markup",
   "snippet": "<!--- BankAccount examples --->
 <!--- Possible selectors:
@@ -67,13 +64,11 @@ Object {
 exports[`Connected Components Angular Plugin componentWithFileTemplate.ts snippet creation 1`] = `
 Object {
   "description": "#### BankAccount
-<p>This is a bank account component</p>
-
+This is a bank account component
 
 
 #### BankAccountHolder
-<p>This is a bank account holder component</p>
-",
+This is a bank account holder component",
   "lang": "markup",
   "snippet": "<!--- BankAccount examples --->
 <!--- Possible selectors:
@@ -99,13 +94,11 @@ Object {
 exports[`Connected Components Angular Plugin componentWithMultiSelectors.ts snippet creation 1`] = `
 Object {
   "description": "#### BankAccount
-<p>This is a bank account component</p>
-
+This is a bank account component
 
 
 #### BankAccountHolder
-<p>This is a bank account holder component</p>
-",
+This is a bank account holder component",
   "lang": "markup",
   "snippet": "<!--- BankAccount examples --->
 <!--- Possible selectors:
@@ -134,12 +127,10 @@ Object {
 exports[`Connected Components Angular Plugin componentWithMultiSelectors.ts snippet creation 2`] = `
 Object {
   "description": "# BankAccount
-<p>This is a bank account component</p>
-
+This is a bank account component
 
 # BankAccountHolder
-<p>This is a bank account holder component</p>
-",
+This is a bank account holder component",
   "lang": "markup",
   "snippet": "<!--- BankAccount examples --->
 <bank-account
