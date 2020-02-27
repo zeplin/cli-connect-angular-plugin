@@ -3,8 +3,8 @@ extends base
 block content
     each component, index in components
         | #### #{component.name}#{(component._extends ? " extends " + component._extends : "")}
-        if component.description.length > 0
+        if component.rawDescription.length > 0
             |
-            | !{component.description}
+            | !{component.rawDescription}
         if index !== (components.length - 1)
             +linebreak(3)

@@ -1,5 +1,6 @@
 /**
  * This is a bank account component
+ * This is line 2 description
  */
 @Component({
   selector: 'bank-account',
