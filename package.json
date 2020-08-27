@@ -1,5 +1,5 @@
 {
-  "name": "@zeplin/cli-connect-angular-plugin",
+  "name": "@zeplin/cgm_de_cli-connect-angular-plugin",
   "version": "0.1.4",
   "description": "Zeplin CLI Connected Components - Angular Plugin",
   "main": "./dist/index",

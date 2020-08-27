@@ -59,7 +59,7 @@ describe("Connected Components Angular Plugin", () => {
 
     test("componentWithMultiSelectors.ts snippet creation", async () => {
         const processor = new Plugin();
-        processor.init({ config: { useFullSnippet: true, useFullDescription: true } });
+        processor.init({ config: { useFullSnippet: true, useFullDescription: true, snippetPath: "", descriptionPath: "" } });
 
         const componentCode = await processor.process(
             {

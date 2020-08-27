@@ -28,6 +28,8 @@ If necessary, Zeplin CLI Angular Plugin can generate more detailed snippets and 
 |----------------------|------------------------------------------------------------------------------|
 | `useFullSnippet`     | Generates a distinct snippet for all combinations of the component selectors |
 | `useFullDescription` | Generates descriptions with implemented interface names                      |
+| `snippetPath`        | Uses a custom pub snippet template                                           |
+| `descriptionPath`    | Uses a custom pub description template                                       |
 
 Here's a sample configuration file (`.zeplin/components.json`):
 
@@ -39,6 +41,8 @@ Here's a sample configuration file (`.zeplin/components.json`):
         "config": {
             "useFullSnippet": true,
             "useFullDescription": true,
+            "snippetPath": "src/zeplin/template/snippet-custom.pug",
+            "descriptionPath": "src/zeplin/template/description-custom.pug"
         }
     }],
     ...
@@ -46,6 +50,27 @@ Here's a sample configuration file (`.zeplin/components.json`):
 ```
 
 ☝️ _Note that after adding the plugin to the configuration file, you don't need to pass it as the `-p` argument to the `connect` command—running `zeplin connect` should be enough._
+
+#### Pass Data
+
+Pass data to your custom Templates.
+
+```json
+{
+    ...
+    "components": [{
+        "name": "Button",
+        "path": "src/app/button/button.component.ts",
+        "zeplinNames": [
+            "/button/enabled"
+        ],
+        "data": {
+            "customSelectors": "enabled='true'"
+        }
+    }]
+    ...
+}
+```
 
 ## About Connected Components
 
