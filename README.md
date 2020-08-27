@@ -41,7 +41,8 @@ Here's a sample configuration file (`.zeplin/components.json`):
         "config": {
             "useFullSnippet": true,
             "useFullDescription": true,
-            "template": "src/zeplin/template/base.pug"
+            "snippetPath": "src/zeplin/template/snippet-custom.pug",
+            "descriptionPath": "src/zeplin/template/description-custom.pug"
         }
     }],
     ...
