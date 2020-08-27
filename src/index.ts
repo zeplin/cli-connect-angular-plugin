@@ -60,9 +60,6 @@ export default class implements ConnectPlugin {
             { tsconfigDirectory: ".", silent: true }
         );
 
-        console.log(path.resolve(this.snippetPath));
-        console.log(path.resolve(this.descriptionPath));
-
         const rawComponents = angularDependencies.getDependencies().components || [];
 
         const components = await Promise.all(this.processComponents(rawComponents));
@@ -80,9 +77,6 @@ export default class implements ConnectPlugin {
         } else {
             description = this.generateDescription({ components });
         }
-
-        console.log(snippet);
-        console.log(description);
 
         const lang = PrismLang.Markup;
 
