@@ -28,12 +28,14 @@ interface Input {
 }
 
 export default class implements ConnectPlugin {
+    snippetPath = "";
+    descriptionPath = "";
     generateSnippet: pug.compileTemplate = pug.compileFile(path.join(__dirname, "template/snippet-summary.pug"));
     generateDescription: pug.compileTemplate = pug.compileFile(path.join(__dirname, "template/description-summary.pug"));
 
     init(context: PluginContext): Promise<void> {
         if (context.config) {
-            const { useFullDescription, useFullSnippet, templatePath } = context.config;
+            const { useFullDescription, useFullSnippet, snippetPath, descriptionPath } = context.config;
 
             if (useFullSnippet) {
                 this.generateSnippet = pug.compileFile(path.join(__dirname, "template/snippet-full.pug"));
@@ -41,8 +43,11 @@ export default class implements ConnectPlugin {
             if (useFullDescription) {
                 this.generateDescription = pug.compileFile(path.join(__dirname, "template/description-full.pug"));
             }
-            if (templatePath && templatePath !== "") {
-                console.log(context.config);
+            if (snippetPath && snippetPath !== "") {
+                this.snippetPath = snippetPath as string;
+            }
+            if (descriptionPath && descriptionPath !== "") {
+                this.descriptionPath = descriptionPath as string;
             }
         }
 
@@ -55,12 +60,25 @@ export default class implements ConnectPlugin {
             { tsconfigDirectory: ".", silent: true }
         );
 
+        console.log(context);
+
         const rawComponents = angularDependencies.getDependencies().components || [];
 
         const components = await Promise.all(this.processComponents(rawComponents));
 
-        const snippet = this.generateSnippet({ components });
-        const description = this.generateDescription({ components });
+        let snippet: string;
+        if (this.snippetPath !== "") {
+            snippet = pug.compileFile(path.join(context.path, this.snippetPath))({ components });
+        } else {
+            snippet = this.generateSnippet({ components });
+        }
+
+        let description: string;
+        if (this.descriptionPath !== "") {
+            description = pug.compileFile(path.join(context.path, this.descriptionPath))({ components });
+        } else {
+            description = this.generateDescription({ components });
+        }
 
         const lang = PrismLang.Markup;
 
