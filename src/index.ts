@@ -61,6 +61,10 @@ export default class implements ConnectPlugin {
         );
 
         console.log(context);
+        console.log('--------------');
+        console.log(path.resolve(context.path));
+        console.log('--------------');
+        console.log(angularDependencies);
 
         const rawComponents = angularDependencies.getDependencies().components || [];
 
