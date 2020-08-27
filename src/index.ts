@@ -60,26 +60,20 @@ export default class implements ConnectPlugin {
             { tsconfigDirectory: ".", silent: true }
         );
 
-        console.log(context);
-        console.log('--------------');
-        console.log(path.resolve(context.path));
-        console.log('--------------');
-        console.log(angularDependencies);
-
         const rawComponents = angularDependencies.getDependencies().components || [];
 
         const components = await Promise.all(this.processComponents(rawComponents));
 
         let snippet: string;
         if (this.snippetPath !== "") {
-            snippet = pug.compileFile(path.join(context.path, this.snippetPath))({ components });
+            snippet = pug.compileFile(path.resolve(context.path))({ components });
         } else {
             snippet = this.generateSnippet({ components });
         }
 
         let description: string;
         if (this.descriptionPath !== "") {
-            description = pug.compileFile(path.join(context.path, this.descriptionPath))({ components });
+            description = pug.compileFile(path.resolve(context.path))({ components });
         } else {
             description = this.generateDescription({ components });
         }
