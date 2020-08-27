@@ -64,18 +64,20 @@ export default class implements ConnectPlugin {
 
         const components = await Promise.all(this.processComponents(rawComponents));
 
+        const templateData = { components, data: context.data };
+
         let snippet: string;
         if (this.snippetPath !== "") {
-            snippet = pug.compileFile(path.resolve(this.snippetPath))({ components });
+            snippet = pug.compileFile(path.resolve(this.snippetPath))(templateData);
         } else {
-            snippet = this.generateSnippet({ components });
+            snippet = this.generateSnippet(templateData);
         }
 
         let description: string;
         if (this.descriptionPath !== "") {
-            description = pug.compileFile(path.resolve(this.descriptionPath))({ components });
+            description = pug.compileFile(path.resolve(this.descriptionPath))(templateData);
         } else {
-            description = this.generateDescription({ components });
+            description = this.generateDescription(templateData);
         }
 
         const lang = PrismLang.Markup;

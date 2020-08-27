@@ -51,6 +51,27 @@ Here's a sample configuration file (`.zeplin/components.json`):
 
 ☝️ _Note that after adding the plugin to the configuration file, you don't need to pass it as the `-p` argument to the `connect` command—running `zeplin connect` should be enough._
 
+#### Pass Data
+
+Pass data to your custom Templates.
+
+```json
+{
+    ...
+    "components": [{
+        "name": "Button",
+        "path": "src/app/button/button.component.ts",
+        "zeplinNames": [
+            "/button/enabled"
+        ],
+        "data": {
+            "customSelectors": "enabled='true'"
+        }
+    }]
+    ...
+}
+```
+
 ## About Connected Components
 
 [Connected Components](https://blog.zeplin.io/introducing-connected-components-components-in-design-and-code-in-harmony-aa894ed5bd95) in Zeplin lets you access components in your codebase directly on designs in Zeplin, with links to Storybook, GitHub and any other source of documentation based on your workflow. 🧩
