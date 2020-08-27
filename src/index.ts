@@ -33,13 +33,16 @@ export default class implements ConnectPlugin {
 
     init(context: PluginContext): Promise<void> {
         if (context.config) {
-            const { useFullDescription, useFullSnippet } = context.config;
+            const { useFullDescription, useFullSnippet, templatePath } = context.config;
 
             if (useFullSnippet) {
                 this.generateSnippet = pug.compileFile(path.join(__dirname, "template/snippet-full.pug"));
             }
             if (useFullDescription) {
                 this.generateDescription = pug.compileFile(path.join(__dirname, "template/description-full.pug"));
+            }
+            if (templatePath && templatePath !== "") {
+                console.log(context.config);
             }
         }
 

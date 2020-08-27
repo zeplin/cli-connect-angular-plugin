@@ -28,6 +28,7 @@ If necessary, Zeplin CLI Angular Plugin can generate more detailed snippets and 
 |----------------------|------------------------------------------------------------------------------|
 | `useFullSnippet`     | Generates a distinct snippet for all combinations of the component selectors |
 | `useFullDescription` | Generates descriptions with implemented interface names                      |
+| `templatePath`       | Uses a custom pub template                                                   |
 
 Here's a sample configuration file (`.zeplin/components.json`):
 
@@ -39,6 +40,7 @@ Here's a sample configuration file (`.zeplin/components.json`):
         "config": {
             "useFullSnippet": true,
             "useFullDescription": true,
+            "template": "src/zeplin/template/base.pug"
         }
     }],
     ...
