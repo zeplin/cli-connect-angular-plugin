@@ -60,23 +60,29 @@ export default class implements ConnectPlugin {
             { tsconfigDirectory: ".", silent: true }
         );
 
+        console.log(path.resolve(this.snippetPath));
+        console.log(path.resolve(this.descriptionPath));
+
         const rawComponents = angularDependencies.getDependencies().components || [];
 
         const components = await Promise.all(this.processComponents(rawComponents));
 
         let snippet: string;
         if (this.snippetPath !== "") {
-            snippet = pug.compileFile(path.resolve(context.path))({ components });
+            snippet = pug.compileFile(path.resolve(this.snippetPath))({ components });
         } else {
             snippet = this.generateSnippet({ components });
         }
 
         let description: string;
         if (this.descriptionPath !== "") {
-            description = pug.compileFile(path.resolve(context.path))({ components });
+            description = pug.compileFile(path.resolve(this.descriptionPath))({ components });
         } else {
             description = this.generateDescription({ components });
         }
+
+        console.log(snippet);
+        console.log(description);
 
         const lang = PrismLang.Markup;
 
