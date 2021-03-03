@@ -45,6 +45,6 @@
   "dependencies": {
     "@compodoc/compodoc": "git+https://github.com/yuqu/compodoc.git#develop",
     "fs-extra": "^8.1.0",
-    "pug": "^2.0.4"
+    "pug": "^3.0.1"
   }
 }
