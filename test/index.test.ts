@@ -57,7 +57,21 @@ describe("Connected Components Angular Plugin", () => {
         expect(componentCode).toMatchSnapshot();
     });
 
-    test("componentWithMultiSelectors.ts snippet creation", async () => {
+    test("component.ts full snippet, full description creation", async () => {
+        const processor = new Plugin();
+        processor.init({ config: { useFullSnippet: true, useFullDescription: true } });
+
+        const componentCode = await processor.process(
+            {
+                path: "test/samples/component.ts",
+                zeplinNames: []
+            }
+        );
+
+        expect(componentCode).toMatchSnapshot();
+    });
+
+    test("componentWithMultiSelectors.ts full snippet, full description creation", async () => {
         const processor = new Plugin();
         processor.init({ config: { useFullSnippet: true, useFullDescription: true } });
 

@@ -9,7 +9,7 @@
       Account Id: {{id}}
     `
 })
-export class BankAccount {
+export class BankAccount extends Object implements OnInit, OnDestroy, OnChanges {
   @Input() bankName: string;
   @Input('account-id') id: string;
 
@@ -27,4 +27,4 @@ export class BankAccount {
       </bank-account>
     `
 })
-export class BankAccountHolder { }
+export class BankAccountHolder implements OnInit { }
