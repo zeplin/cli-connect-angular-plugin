@@ -1,4 +1,5 @@
 import Plugin from "../src";
+import { logger } from "./helper/logger";
 
 describe("Connected Components Angular Plugin", () => {
     beforeEach(() => {
@@ -59,7 +60,7 @@ describe("Connected Components Angular Plugin", () => {
 
     test("component.ts full snippet, full description creation", async () => {
         const processor = new Plugin();
-        processor.init({ config: { useFullSnippet: true, useFullDescription: true } });
+        processor.init({ config: { useFullSnippet: true, useFullDescription: true }, components: [], logger });
 
         const componentCode = await processor.process(
             {
@@ -73,7 +74,7 @@ describe("Connected Components Angular Plugin", () => {
 
     test("componentWithMultiSelectors.ts full snippet, full description creation", async () => {
         const processor = new Plugin();
-        processor.init({ config: { useFullSnippet: true, useFullDescription: true } });
+        processor.init({ config: { useFullSnippet: true, useFullDescription: true }, components: [], logger });
 
         const componentCode = await processor.process(
             {
