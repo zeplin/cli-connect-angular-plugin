@@ -2,10 +2,10 @@
   "name": "@zeplin/cli-connect-angular-plugin",
   "version": "0.1.4",
   "description": "Zeplin CLI Connected Components - Angular Plugin",
-  "main": "./dist/index",
+  "main": "./dist/src/index",
   "scripts": {
     "test": "jest",
-    "build": "rm -rf dist/ && tsc && copyfiles -u 1 src/template/** dist/",
+    "build": "rm -rf dist/ && tsc && copyfiles -u 1 src/template/** dist/src",
     "lint": "eslint --ext .js,.ts .",
     "prepare": "npm run build"
   },
@@ -28,6 +28,7 @@
     "@types/jest": "^24.0.18",
     "@types/node": "^12.7.5",
     "@types/pug": "^2.0.4",
+    "@types/update-notifier": "^5.0.0",
     "@typescript-eslint/eslint-plugin": "^2.3.0",
     "@typescript-eslint/parser": "^2.3.0",
     "@zeplin/cli": "^1.1.6",
@@ -44,6 +45,7 @@
   "dependencies": {
     "@compodoc/compodoc": "git+https://github.com/yuqu/compodoc.git#develop",
     "fs-extra": "^8.1.0",
-    "pug": "^3.0.2"
+    "pug": "^3.0.2",
+    "update-notifier": "^4.1.3"
   }
 }

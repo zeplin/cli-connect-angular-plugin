@@ -5,6 +5,8 @@ import { AngularDependencies, ComponentDep } from "@compodoc/compodoc";
 import {
     ConnectPlugin, ComponentConfig, ComponentData, PrismLang, PluginContext
 } from "@zeplin/cli";
+import updateNotifier from "update-notifier";
+import { name as packageName, version as packageVersion } from "../package.json";
 import { Selector, parseSelector, ngContentExists } from "./util";
 
 interface Component {
@@ -26,6 +28,15 @@ interface Input {
     optional: boolean;
     description: string;
 }
+
+updateNotifier({
+    pkg: {
+        name: packageName,
+        version: packageVersion
+    },
+    updateCheckInterval: 0,
+    shouldNotifyInNpmScript: true
+}).notify();
 
 export default class implements ConnectPlugin {
     generateSnippet: pug.compileTemplate = pug.compileFile(path.join(__dirname, "template/snippet-summary.pug"));
