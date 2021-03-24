@@ -2,11 +2,10 @@ extends base
 
 block content
     each component, index in components
-        | # #{component.name}
-        +list("extends", component._extends)
+        | ### #{component.name}#{(component._extends ? " extends " + component._extends : "")}
         +list("implements", component._implements)
         if component.rawDescription.length > 0
-            +linebreak(1)
+            +linebreak(2)
             | !{component.rawDescription}
         if index !== (components.length - 1)
             +linebreak(2)

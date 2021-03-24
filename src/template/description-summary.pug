@@ -2,7 +2,7 @@ extends base
 
 block content
     each component, index in components
-        | #### #{component.name}#{(component._extends ? " extends " + component._extends : "")}
+        | ### #{component.name}#{(component._extends ? " extends " + component._extends : "")}
         if component.rawDescription.length > 0
             |
             | !{component.rawDescription}

@@ -1,13 +1,47 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Connected Components Angular Plugin component.ts full snippet, full description creation 1`] = `
+Object {
+  "description": "### BankAccount extends Object
+
+#### implements
+- OnInit
+- OnDestroy
+- OnChanges
+
+This is a bank account component
+This is line 2 description
+
+### BankAccountHolder
+
+#### implements
+- OnInit
+
+This is a bank account holder component",
+  "lang": "markup",
+  "snippet": "<!--- BankAccount examples --->
+<bank-account
+  account-id='{string}'
+  bankName='{string}'>
+</bank-account>
+
+
+
+<!--- BankAccountHolder examples --->
+<bank-account-holder>
+    {content}
+</bank-account-holder>",
+}
+`;
+
 exports[`Connected Components Angular Plugin component.ts snippet creation 1`] = `
 Object {
-  "description": "#### BankAccount
+  "description": "### BankAccount extends Object
 This is a bank account component
 This is line 2 description
 
 
-#### BankAccountHolder
+### BankAccountHolder
 This is a bank account holder component",
   "lang": "markup",
   "snippet": "<!--- BankAccount examples --->
@@ -33,11 +67,11 @@ This is a bank account holder component",
 
 exports[`Connected Components Angular Plugin componentWithDecoratorInputs.ts snippet creation 1`] = `
 Object {
-  "description": "#### BankAccount
+  "description": "### BankAccount
 This is a bank account component
 
 
-#### BankAccountHolder
+### BankAccountHolder
 This is a bank account holder component",
   "lang": "markup",
   "snippet": "<!--- BankAccount examples --->
@@ -63,11 +97,11 @@ This is a bank account holder component",
 
 exports[`Connected Components Angular Plugin componentWithFileTemplate.ts snippet creation 1`] = `
 Object {
-  "description": "#### BankAccount
+  "description": "### BankAccount
 This is a bank account component
 
 
-#### BankAccountHolder
+### BankAccountHolder
 This is a bank account holder component",
   "lang": "markup",
   "snippet": "<!--- BankAccount examples --->
@@ -91,45 +125,14 @@ This is a bank account holder component",
 }
 `;
 
-exports[`Connected Components Angular Plugin componentWithMultiSelectors.ts snippet creation 1`] = `
+exports[`Connected Components Angular Plugin componentWithMultiSelectors.ts full snippet, full description creation 1`] = `
 Object {
-  "description": "#### BankAccount
+  "description": "### BankAccount
+
 This is a bank account component
 
+### BankAccountHolder
 
-#### BankAccountHolder
-This is a bank account holder component",
-  "lang": "markup",
-  "snippet": "<!--- BankAccount examples --->
-<!--- Possible selectors:
-  - bank-account
-  - .account
-  - [type=account]
-  - p.statement[type=account]
---->
-<bank-account
-  account-id='{string}'
-  bankName='{string}'>
-</bank-account>
-
-
-
-<!--- BankAccountHolder examples --->
-<!--- Possible selectors:
-  - bank-account-holder
---->
-<bank-account-holder>
-    {content}
-</bank-account-holder>",
-}
-`;
-
-exports[`Connected Components Angular Plugin componentWithMultiSelectors.ts snippet creation 2`] = `
-Object {
-  "description": "# BankAccount
-This is a bank account component
-
-# BankAccountHolder
 This is a bank account holder component",
   "lang": "markup",
   "snippet": "<!--- BankAccount examples --->
@@ -160,6 +163,39 @@ This is a bank account holder component",
 
 
 <!--- BankAccountHolder examples --->
+<bank-account-holder>
+    {content}
+</bank-account-holder>",
+}
+`;
+
+exports[`Connected Components Angular Plugin componentWithMultiSelectors.ts snippet creation 1`] = `
+Object {
+  "description": "### BankAccount
+This is a bank account component
+
+
+### BankAccountHolder
+This is a bank account holder component",
+  "lang": "markup",
+  "snippet": "<!--- BankAccount examples --->
+<!--- Possible selectors:
+  - bank-account
+  - .account
+  - [type=account]
+  - p.statement[type=account]
+--->
+<bank-account
+  account-id='{string}'
+  bankName='{string}'>
+</bank-account>
+
+
+
+<!--- BankAccountHolder examples --->
+<!--- Possible selectors:
+  - bank-account-holder
+--->
 <bank-account-holder>
     {content}
 </bank-account-holder>",
