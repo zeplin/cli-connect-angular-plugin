@@ -1,6 +1,6 @@
-src
-test
-coverage
+/src
+/test
+/coverage
 
 .vscode
 .circleci
