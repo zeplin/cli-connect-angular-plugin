@@ -9,12 +9,20 @@ describe("Connected Components Angular Plugin", () => {
     test("component.ts snippet creation", async () => {
         const plugin = new Plugin();
 
-        const componentCode = await plugin.process(
-            {
-                path: "test/samples/component.ts",
-                zeplinNames: []
+        const component = {
+            path: "test/samples/component.ts",
+            zeplinNames: []
+        };
+
+        await plugin.init({
+            logger,
+            components: [component],
+            config: {
+                tsConfigPath: "./tsconfig.test.json"
             }
-        );
+        });
+
+        const componentCode = await plugin.process(component);
 
         expect(componentCode).toMatchSnapshot();
     });
@@ -22,12 +30,20 @@ describe("Connected Components Angular Plugin", () => {
     test("componentWithDecoratorInputs.ts snippet creation", async () => {
         const processor = new Plugin();
 
-        const componentCode = await processor.process(
-            {
-                path: "test/samples/componentWithDecoratorInputs.ts",
-                zeplinNames: []
+        const component = {
+            path: "test/samples/componentWithDecoratorInputs.ts",
+            zeplinNames: []
+        };
+
+        await processor.init({
+            logger,
+            components: [component],
+            config: {
+                tsConfigPath: "./tsconfig.test.json"
             }
-        );
+        });
+
+        const componentCode = await processor.process(component);
 
         expect(componentCode).toMatchSnapshot();
     });
@@ -35,12 +51,20 @@ describe("Connected Components Angular Plugin", () => {
     test("componentWithFileTemplate.ts snippet creation", async () => {
         const processor = new Plugin();
 
-        const componentCode = await processor.process(
-            {
-                path: "test/samples/componentWithFileTemplate.ts",
-                zeplinNames: []
+        const component = {
+            path: "test/samples/componentWithFileTemplate.ts",
+            zeplinNames: []
+        };
+
+        await processor.init({
+            logger,
+            components: [component],
+            config: {
+                tsConfigPath: "./tsconfig.test.json"
             }
-        );
+        });
+
+        const componentCode = await processor.process(component);
 
         expect(componentCode).toMatchSnapshot();
     });
@@ -48,40 +72,65 @@ describe("Connected Components Angular Plugin", () => {
     test("componentWithMultiSelectors.ts snippet creation", async () => {
         const processor = new Plugin();
 
-        const componentCode = await processor.process(
-            {
-                path: "test/samples/componentWithMultiSelectors.ts",
-                zeplinNames: []
+        const component = {
+            path: "test/samples/componentWithMultiSelectors.ts",
+            zeplinNames: []
+        };
+
+        await processor.init({
+            logger,
+            components: [component],
+            config: {
+                tsConfigPath: "./tsconfig.test.json"
             }
-        );
+        });
+
+        const componentCode = await processor.process(component);
 
         expect(componentCode).toMatchSnapshot();
     });
 
     test("component.ts full snippet, full description creation", async () => {
         const processor = new Plugin();
-        processor.init({ config: { useFullSnippet: true, useFullDescription: true }, components: [], logger });
 
-        const componentCode = await processor.process(
-            {
-                path: "test/samples/component.ts",
-                zeplinNames: []
-            }
-        );
+        const component = {
+            path: "test/samples/component.ts",
+            zeplinNames: []
+        };
+
+        await processor.init({
+            config: {
+                useFullSnippet: true,
+                useFullDescription: true,
+                tsConfigPath: "./tsconfig.test.json"
+            },
+            components: [component],
+            logger
+        });
+
+        const componentCode = await processor.process(component);
 
         expect(componentCode).toMatchSnapshot();
     });
 
     test("componentWithMultiSelectors.ts full snippet, full description creation", async () => {
         const processor = new Plugin();
-        processor.init({ config: { useFullSnippet: true, useFullDescription: true }, components: [], logger });
+        const component = {
+            path: "test/samples/componentWithMultiSelectors.ts",
+            zeplinNames: []
+        };
 
-        const componentCode = await processor.process(
-            {
-                path: "test/samples/componentWithMultiSelectors.ts",
-                zeplinNames: []
-            }
-        );
+        await processor.init({
+            config: {
+                useFullSnippet: true,
+                useFullDescription: true,
+                tsConfigPath: "./tsconfig.test.json"
+            },
+            components: [component],
+            logger
+        });
+
+        const componentCode = await processor.process(component);
 
         expect(componentCode).toMatchSnapshot();
     });

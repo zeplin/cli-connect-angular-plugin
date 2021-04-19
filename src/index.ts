@@ -32,7 +32,10 @@ interface Input {
 }
 
 interface AngularPluginConfig {
-    tsConfigPath: string;
+    tsConfigPath?: string;
+    useFullDescription?: boolean;
+    useFullSnippet?: boolean;
+    failFastOnErrors?: boolean;
 }
 
 updateNotifier({
@@ -46,7 +49,10 @@ updateNotifier({
 
 export default class implements ConnectPlugin {
     config: AngularPluginConfig = {
-        tsConfigPath: "./tsconfig.json"
+        tsConfigPath: "./tsconfig.json",
+        useFullDescription: false,
+        useFullSnippet: false,
+        failFastOnErrors: false
     };
 
     parsedComponentMap?: Record<string, ComponentDep[]>;
@@ -57,15 +63,13 @@ export default class implements ConnectPlugin {
     async init(context: PluginContext): Promise<void> {
         Object.assign(this.config, context.config);
 
-        if (context.config) {
-            const { useFullDescription, useFullSnippet } = context.config;
+        const { useFullDescription, useFullSnippet } = this.config;
 
-            if (useFullSnippet) {
-                this.generateSnippet = pug.compileFile(path.join(__dirname, "template/snippet-full.pug"));
-            }
-            if (useFullDescription) {
-                this.generateDescription = pug.compileFile(path.join(__dirname, "template/description-full.pug"));
-            }
+        if (useFullSnippet) {
+            this.generateSnippet = pug.compileFile(path.join(__dirname, "template/snippet-full.pug"));
+        }
+        if (useFullDescription) {
+            this.generateDescription = pug.compileFile(path.join(__dirname, "template/description-full.pug"));
         }
 
         const parsedData = await this.getDependencies(context.logger);
@@ -191,11 +195,23 @@ export default class implements ConnectPlugin {
     }
 
     private async getDependencies(logger: Logger): Promise<ParsedData> {
-        const outputDirPath = path.join(os.tmpdir(), ".zeplin", packageName);
+        const [pkgName] = packageName.split("/").slice(-1);
 
-        const tsConfigPath = path.resolve(this.config.tsConfigPath);
+        const outputDirPath = path.join(os.tmpdir(), ".zeplin", pkgName);
 
-        const { stdout } = await execa.command(`compodoc -p ${tsConfigPath} -e json -d ${outputDirPath}`);
+        const tsConfigPath = path.resolve(this.config.tsConfigPath || "");
+
+        const { stdout, stderr } = await execa.command(`compodoc -p ${tsConfigPath} -e json -d ${outputDirPath}`);
+
+        if (stderr) {
+            logger.debug(`Error while running compodoc: ${stderr}`);
+
+            if (this.config.failFastOnErrors) {
+                throw new Error("Error while generating component documentation");
+            }
+
+            return { components: [] };
+        }
 
         logger.debug(`compodoc output: ${stdout}`);
 
