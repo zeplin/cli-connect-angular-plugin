@@ -205,6 +205,12 @@ export default class implements ConnectPlugin {
             const { stdout } = await execa.command(`compodoc -p ${tsConfigPath} -e json -d ${outputDirPath}`);
 
             logger.debug(`compodoc output: ${stdout}`);
+
+            const outputPath = path.join(outputDirPath, "documentation.json");
+
+            const file = await readFile(outputPath, "utf8");
+
+            return JSON.parse(file) as ParsedData;
         } catch (err) {
             logger.debug(`Error while running compodoc: ${err}`);
 
@@ -214,11 +220,5 @@ export default class implements ConnectPlugin {
 
             return { components: [] };
         }
-
-        const outputPath = path.join(outputDirPath, "documentation.json");
-
-        const file = await readFile(outputPath, "utf8");
-
-        return JSON.parse(file) as ParsedData;
     }
 }
