@@ -1,13 +1,15 @@
+import os from "os";
 import path from "path";
 import pug from "pug";
 import { readFile } from "fs-extra";
-import { AngularDependencies, ComponentDep } from "@compodoc/compodoc";
 import {
-    ConnectPlugin, ComponentConfig, ComponentData, PrismLang, PluginContext
+    ConnectPlugin, ComponentConfig, ComponentData, PrismLang, PluginContext, Logger
 } from "@zeplin/cli";
 import updateNotifier from "update-notifier";
+import execa from "execa";
 import { name as packageName, version as packageVersion } from "../package.json";
 import { Selector, parseSelector, ngContentExists } from "./util";
+import { ComponentDep, ParsedData } from "@compodoc/compodoc";
 
 interface Component {
     name: string;
@@ -29,6 +31,13 @@ interface Input {
     description: string;
 }
 
+interface AngularPluginConfig {
+    tsConfigPath?: string;
+    useFullDescription?: boolean;
+    useFullSnippet?: boolean;
+    failFastOnErrors?: boolean;
+}
+
 updateNotifier({
     pkg: {
         name: packageName,
@@ -39,31 +48,46 @@ updateNotifier({
 }).notify();
 
 export default class implements ConnectPlugin {
+    config: AngularPluginConfig = {
+        tsConfigPath: "./tsconfig.json",
+        useFullDescription: false,
+        useFullSnippet: false,
+        failFastOnErrors: false
+    };
+
+    parsedComponentMap?: Record<string, ComponentDep[]>;
+
     generateSnippet: pug.compileTemplate = pug.compileFile(path.join(__dirname, "template/snippet-summary.pug"));
     generateDescription: pug.compileTemplate = pug.compileFile(path.join(__dirname, "template/description-summary.pug"));
 
-    init(context: PluginContext): Promise<void> {
-        if (context.config) {
-            const { useFullDescription, useFullSnippet } = context.config;
+    async init(context: PluginContext): Promise<void> {
+        Object.assign(this.config, context.config);
 
-            if (useFullSnippet) {
-                this.generateSnippet = pug.compileFile(path.join(__dirname, "template/snippet-full.pug"));
-            }
-            if (useFullDescription) {
-                this.generateDescription = pug.compileFile(path.join(__dirname, "template/description-full.pug"));
-            }
+        const { useFullDescription, useFullSnippet } = this.config;
+
+        if (useFullSnippet) {
+            this.generateSnippet = pug.compileFile(path.join(__dirname, "template/snippet-full.pug"));
+        }
+        if (useFullDescription) {
+            this.generateDescription = pug.compileFile(path.join(__dirname, "template/description-full.pug"));
         }
 
-        return Promise.resolve();
+        const parsedData = await this.getDependencies(context.logger);
+
+        this.parsedComponentMap = parsedData.components.reduce((previous, current) => {
+            const { file: key } = current;
+            const existing = previous[key] || [];
+            previous[key] = [...existing, current];
+            return previous;
+        }, {} as Record<string, ComponentDep[]>);
     }
 
     async process(context: ComponentConfig): Promise<ComponentData> {
-        const angularDependencies = new AngularDependencies(
-            [path.resolve(context.path)],
-            { tsconfigDirectory: ".", silent: true }
-        );
+        if (!this.parsedComponentMap) {
+            return Promise.resolve({});
+        }
 
-        const rawComponents = angularDependencies.getDependencies().components || [];
+        const rawComponents = this.parsedComponentMap[context.path] || [];
 
         const components = await Promise.all(this.processComponents(rawComponents));
 
@@ -168,5 +192,33 @@ export default class implements ConnectPlugin {
                 hasChildren
             };
         });
+    }
+
+    private async getDependencies(logger: Logger): Promise<ParsedData> {
+        const [pkgName] = packageName.split("/").slice(-1);
+
+        const outputDirPath = path.join(os.tmpdir(), ".zeplin", pkgName);
+
+        const tsConfigPath = path.resolve(this.config.tsConfigPath || "");
+
+        try {
+            const { stdout } = await execa.command(`compodoc -p ${tsConfigPath} -e json -d ${outputDirPath}`);
+
+            logger.debug(`compodoc output: ${stdout}`);
+
+            const outputPath = path.join(outputDirPath, "documentation.json");
+
+            const file = await readFile(outputPath, "utf8");
+
+            return JSON.parse(file) as ParsedData;
+        } catch (err) {
+            logger.debug(`Error while running compodoc: ${err}`);
+
+            if (this.config.failFastOnErrors) {
+                throw new Error("Error while generating component documentation");
+            }
+
+            return { components: [] };
+        }
     }
 }

@@ -44,7 +44,8 @@
     "typescript": "^3.9.7"
   },
   "dependencies": {
-    "@compodoc/compodoc": "git+https://github.com/yuqu/compodoc.git#develop",
+    "@compodoc/compodoc": "^1.1.11",
+    "execa": "^5.0.0",
     "fs-extra": "^8.1.0",
     "pug": "^3.0.2",
     "update-notifier": "^4.1.3"

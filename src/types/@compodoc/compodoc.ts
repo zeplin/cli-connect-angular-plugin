@@ -60,15 +60,4 @@ declare module "@compodoc/compodoc" {
     export interface ParsedData {
         components: Array<ComponentDep>;
     }
-
-    export interface AngularDependenciesInstance {
-        getDependencies(): ParsedData;
-    }
-
-    export interface AngularDependencies {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        new(files?: string[], options?: any): AngularDependenciesInstance;
-    }
-
-    const AngularDependencies: AngularDependencies;
 }
