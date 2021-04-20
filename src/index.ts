@@ -201,10 +201,12 @@ export default class implements ConnectPlugin {
 
         const tsConfigPath = path.resolve(this.config.tsConfigPath || "");
 
-        const { stdout, stderr } = await execa.command(`compodoc -p ${tsConfigPath} -e json -d ${outputDirPath}`);
+        try {
+            const { stdout } = await execa.command(`compodoc -p ${tsConfigPath} -e json -d ${outputDirPath}`);
 
-        if (stderr) {
-            logger.debug(`Error while running compodoc: ${stderr}`);
+            logger.debug(`compodoc output: ${stdout}`);
+        } catch (err) {
+            logger.debug(`Error while running compodoc: ${err}`);
 
             if (this.config.failFastOnErrors) {
                 throw new Error("Error while generating component documentation");
@@ -212,8 +214,6 @@ export default class implements ConnectPlugin {
 
             return { components: [] };
         }
-
-        logger.debug(`compodoc output: ${stdout}`);
 
         const outputPath = path.join(outputDirPath, "documentation.json");
 
