@@ -202,7 +202,13 @@ export default class implements ConnectPlugin {
         const tsConfigPath = path.resolve(this.config.tsConfigPath || "");
 
         try {
-            const { stdout } = await execa.command(`compodoc -p ${tsConfigPath} -e json -d ${outputDirPath}`);
+            const { stdout } = await execa.command(
+                `compodoc -p ${tsConfigPath} -e json -d ${outputDirPath}`,
+                {
+                    preferLocal: true,
+                    localDir: __dirname
+                }
+            );
 
             logger.debug(`compodoc output: ${stdout}`);
 
